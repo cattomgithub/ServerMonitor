@@ -30,3 +30,30 @@ source /root/ServerMonitor/env/ve/bin/activate
 ```bash
 pip install django
 ```
+
+5. Clone the project from remote
+
+```bash
+cd /root/ServerMonitor/ && git clone https://github.com/cattomgithub/ServerMonitor.git
+```
+
+6. Test the django Server
+
+```bash
+ufw allow 8000
+cd ServerMonitor
+python manage.py runserver 0.0.0.0:8000
+```
+
+7. Install uWSGI
+
+```bash
+sudo apt install python3.8-dev gcc
+pip install uwsgi
+```
+
+8. Test uWSGI with django
+
+```bash
+uwsgi --http :8000 --module public.wsgi
+```
