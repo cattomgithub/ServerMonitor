@@ -8,7 +8,7 @@
 
 ```bash
 sudo apt -y update && apt -y upgrade && apt -y autoremove
-sudo apt -y install python3.8-venv python3.8-dev gcc
+sudo apt -y install python3-pip python3-dev build-essential libssl-dev libffi-dev python3-setuptools python3.8-venv python3.8-dev gcc
 
 cd /root && git clone https://github.com/cattomgithub/ServerMonitor.git
 cd ServerMonitor && mkdir env
@@ -55,3 +55,5 @@ systemctl start node.monitor.service
 ```
 
 uwsgi -s /root/nginx_data/monitor/main.sock --manage-script-name --mount /root/ServerMonitor=main:app
+
+   git fetch --all &&  git reset --hard origin/master && git pull
