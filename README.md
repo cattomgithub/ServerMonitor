@@ -57,3 +57,5 @@ pip install uwsgi
 ```bash
 uwsgi --http :8000 --module public.wsgi
 ```
+
+9.  
