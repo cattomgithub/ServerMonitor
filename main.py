@@ -35,5 +35,6 @@ def hook():
     else:
         abort(400)
 
-app.run(port=config.WEBHOOK_PORT)
+if __name__ == '__main__':
+	app.run()
 

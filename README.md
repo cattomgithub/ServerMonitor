@@ -53,3 +53,5 @@ sudo systemctl daemon-reload
 systemctl enable node.monitor.service
 systemctl start node.monitor.service
 ```
+
+uwsgi -s /root/nginx_data/monitor/main.sock --manage-script-name --mount /root/ServerMonitor=main:app
