@@ -2,6 +2,6 @@ SERVER_ID = 1
 
 UPDATE_DELAY = 1  # in seconds
 
-WEBHOOK_URL = 'http://127.0.0.1:8080/hook'
+WEBHOOK_URL = 'http://209.141.46.32/hook'
 
 WEBHOOK_PORT = 8080

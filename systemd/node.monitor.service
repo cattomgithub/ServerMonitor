@@ -1,0 +1,9 @@
+[Unit]
+Description=node service of Server Monitor
+After=network.target
+[Service]
+User=root
+Restart=always
+ExecStart=/root/ServerMonitor/env/bin/python /root/ServerMonitor/node.py --serve-in-foreground
+[Install]
+WantedBy=multi-user.target
