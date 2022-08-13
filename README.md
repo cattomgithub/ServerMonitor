@@ -1,61 +1,29 @@
-# Server Monitor - Deploy
+# Server Monitor
 
-1. Update the Server
+## Description
 
+## Directory Structure
+
+## Usage
 ```bash
 sudo apt update
 sudo apt upgrade
-```
+sudo apt autoremove
+sudo apt install python3.8-venv python3.8-dev gcc
 
-2. Set up a Virtual Environment for Python
-
-```bash
-sudo apt install python3.8-venv
-mkdir ServerMonitor
+cd /root && git clone https://github.com/cattomgithub/ServerMonitor.git
 cd ServerMonitor && mkdir env
-python3 -m venv /root/ServerMonitor/env/ve
-```
+python3 -m venv /root/ServerMonitor/env
 
-3. Activate the virtual environment
+source /root/ServerMonitor/env/bin/activate
 
-```bash
-source /root/ServerMonitor/env/ve/bin/activate
-```
-> `which python`
-> 
-> Verify that you are working from within your virtual environment by taking a look at where the Python binary is located.
+pip install django uwsgi
 
-4. Install the Django web framework using the pip package installer.
+cd /root/nginx_data/monitor && mkdir static
+cd /root/ServerMonitor/ && python manage.py collectstatic
 
-```bash
-pip install django
-```
+cd /root/ServerMonitor/env/
+mkdir uwsgi_vassals
+sudo ln -s /root/ServerMonitor/uwsgi.ini /root/ServerMonitor/env/uwsgi_vassals/
 
-5. Clone the project from remote
-
-```bash
-cd /root/ServerMonitor/ && git clone https://github.com/cattomgithub/ServerMonitor.git
-```
-
-6. Test the django Server
-
-```bash
-ufw allow 8000
-cd ServerMonitor
-python manage.py runserver 0.0.0.0:8000
-```
-
-7. Install uWSGI
-
-```bash
-sudo apt install python3.8-dev gcc
-pip install uwsgi
-```
-
-8. Test uWSGI with django
-
-```bash
-uwsgi --http :8000 --module public.wsgi
-```
-
-9.  
+```  

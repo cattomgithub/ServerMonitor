@@ -1,0 +1,9 @@
+[Unit]
+Description=uWSGI emperor
+After=network.target
+[Service]
+User=root
+Restart=always
+ExecStart=/root/ServerMonitor/env/bin/uwsgi --emperor /root/ServerMonitor/env/uwsgi_vassals/ --uid root --gid root
+[Install]
+WantedBy=multi-user.target
