@@ -50,4 +50,6 @@ while True:
 
     webhook_data = get_os_detail()
 
+    print(webhook_data)
+
     sent_json(webhook_url, webhook_data)
