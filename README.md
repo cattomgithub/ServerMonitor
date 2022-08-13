@@ -26,4 +26,11 @@ cd /root/ServerMonitor/env/
 mkdir uwsgi_vassals
 sudo ln -s /root/ServerMonitor/uwsgi.ini /root/ServerMonitor/env/uwsgi_vassals/
 
+sudo ln -s /root/ServerMonitor/systemd/emperor.uwsgi.service /etc/systemd/system/emperor.uwsgi.service
+systemctl enable emperor.uwsgi.service
+systemctl start emperor.uwsgi.service
+
+sudo cp /root/ServerMonitor/uwsgi_params /root/nginx_data/monitor/uwsgi_params
+
+/root/webhook/maria.sh
 ```  
