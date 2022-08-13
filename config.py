@@ -1,6 +1,6 @@
 SERVER_ID = 2
 
-UPDATE_DELAY = 1  # in seconds
+UPDATE_DELAY = 5  # in seconds
 
 WEBHOOK_URL = 'http://209.141.46.32/hook'
 
