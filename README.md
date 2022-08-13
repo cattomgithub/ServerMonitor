@@ -5,6 +5,8 @@
 ## Directory Structure
 
 ## Usage
+
+### Public panel
 ```bash
 sudo apt update
 sudo apt upgrade
@@ -24,13 +26,17 @@ cd /root/ServerMonitor/ && python manage.py collectstatic
 
 cd /root/ServerMonitor/env/
 mkdir uwsgi_vassals
-sudo ln -s /root/ServerMonitor/uwsgi.ini /root/ServerMonitor/env/uwsgi_vassals/
+sudo ln -s /root/ServerMonitor/uwsgi/public_uwsgi.ini /root/ServerMonitor/env/uwsgi_vassals/
 
 sudo ln -s /root/ServerMonitor/systemd/emperor.uwsgi.service /etc/systemd/system/emperor.uwsgi.service
 systemctl enable emperor.uwsgi.service
 systemctl start emperor.uwsgi.service
 
-sudo cp /root/ServerMonitor/uwsgi_params /root/nginx_data/monitor/uwsgi_params
+sudo cp /root/ServerMonitor/uwsgi/uwsgi_params /root/nginx_data/monitor/uwsgi_params
+```
 
-/root/webhook/maria.sh
-```  
+### Main
+```bash
+source /root/ServerMonitor/env/bin/activate
+pip install flask
+```
