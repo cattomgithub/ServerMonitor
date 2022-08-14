@@ -7,7 +7,7 @@ django.setup()
 # Import package
 from flask import Flask, request, abort, render_template
 from panel.models import Server
-import config
+import node_config
 
 # Edit Django database
 def edit_database(data):

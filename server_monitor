@@ -1,11 +1,19 @@
 #!/bin/bash
 
+# 字体
+RED_PREFIX="\033[31m"
+YELLOW_PREFIX="\033[1;33m"
+LIGHT_PURPLE_PREFIX="\033[1;35m"
+COLOR_SUFFIX="\033[0m"
+
+# 版本号
+VERSION="v1.0.0"
+
 ini() {
     # Upgrade server and install requirement.
     sudo apt -y update && apt -y upgrade && apt -y autoremove
     sudo apt -y install python3-pip python3-dev build-essential libssl-dev libffi-dev python3-setuptools python3.8-venv python3.8-dev gcc
-    # Clone the project and create Python virtual environment(venv)
-    cd /root && git clone https://github.com/cattomgithub/ServerMonitor.git
+    # Create Python virtual environment(venv)
     cd ServerMonitor && mkdir env
     python3 -m venv /root/ServerMonitor/env
     # shellcheck source=/dev/null
@@ -21,19 +29,33 @@ ini() {
 public() (
     # shellcheck source=/dev/null
     source /root/ServerMonitor/env/bin/activate
-    # Collect static file.
-    cd /root/nginx_data/monitor && mkdir static
-    cd /root/ServerMonitor/ && python manage.py collectstatic
+
     # Create vassals of uwsgi
     cd /root/ServerMonitor/env/ && mkdir public_vassals
     sudo ln -s /root/ServerMonitor/uwsgi/public_uwsgi.ini /root/ServerMonitor/env/public_vassals/
+
     # Register public.uwsgi.service as a system service.
     sudo ln -s /root/ServerMonitor/systemd/public.uwsgi.service /etc/systemd/system/public.uwsgi.service
     sudo systemctl daemon-reload
     systemctl enable public.uwsgi.service
     systemctl start public.uwsgi.service
+
     # Copy params file of uwsgi to nginx work directory
     sudo cp /root/ServerMonitor/uwsgi/uwsgi_params /root/nginx_data/monitor/uwsgi_params
+
+    # Create the secret key of Django
+    cd /root/ServerMonitor/ && python random_secret_key.py
+    
+    # Collect static file
+    cd /root/nginx_data/monitor && mkdir static
+    cd /root/ServerMonitor/ && python manage.py collectstatic
+    
+    # Create the database of panel
+    cd /root/ServerMonitor/ && python manage.py migrate
+
+    echo -e "${YELLOW_PREFIX}Note: Run
+    source /root/ServerMonitor/env/bin/activate
+    python manage.py createsuperuser to create the superuser by yourself.${COLOR_SUFFIX}"
 )
 
 main() {
@@ -47,9 +69,26 @@ main() {
     sudo systemctl daemon-reload
     systemctl enable main.uwsgi.service
     systemctl start main.uwsgi.service
+    echo -e "${YELLOW_PREFIX}Note: Remeber to add node server on Django admin.${COLOR_SUFFIX}"
 }
 
 node() {
+    cd "$HOME"/ServerMonitor || exit
+    while [[ -z $server_id ]]; do
+        read -r -p "Server ID:" server_id
+    done
+    while [[ -z $main_address ]]; do
+        echo -e "${YELLOW_PREFIX}Note: The main server needs to enable https!${COLOR_SUFFIX}"
+        read -r -p "Main server address(<ip:port> or domain):" main_address
+    done
+
+    read -r -p "Update delay(in seconds) [default:2]:" update_delay
+    update_delay=${update_delay:-2}
+
+    echo "SERVER_ID = $server_id
+UPDATE_DELAY = $update_delay
+MAIN_ADDRESS = '$main_address'" >>node_config.py
+
     # shellcheck source=/dev/null
     source /root/ServerMonitor/env/bin/activate
     # Register node.monitor.service as a system service.
@@ -59,5 +98,34 @@ node() {
     systemctl start node.monitor.service
 }
 
-cd "$HOME"/ServerMonitor || exit
-sed -i '$a\SERVER_ID = 2' config.py
+echo && echo -e " Server Monitor By ${LIGHT_PURPLE_PREFIX}Cat Tom${COLOR_SUFFIX} ${RED_PREFIX}[${VERSION}]${COLOR_SUFFIX}" && echo
+
+while
+    echo -e "  1. Initialization
+  2. Depoly public panel
+  3. Depoly main server
+  4. Depoly node server"
+
+    read -r -p "Input a number[1-4] or Quit[Q]:" num
+do
+    case $num in
+    1)
+        ini
+        ;;
+    2)
+        public
+        ;;
+    3)
+        main
+        ;;
+    4)
+        node
+        ;;
+    Q | q)
+        exit 0
+        ;;
+    *)
+        echo -e "${RED_PREFIX}Wrong input. Try again.${COLOR_SUFFIX}"
+        ;;
+    esac
+done

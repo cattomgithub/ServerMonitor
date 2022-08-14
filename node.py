@@ -3,7 +3,7 @@ import time
 import math
 import json
 import psutil
-import config
+import node_config
 import requests
 
 
@@ -25,7 +25,7 @@ def get_os_detail():
     uptime_day %= 24
 
     result = {
-        "Server_ID": config.SERVER_ID,
+        "Server_ID": node_config.SERVER_ID,
         "CPU_Usage": cpu_usage,
         "Mem_Usage": mem_usage,
         "Load_Avg": loadavg,
@@ -44,9 +44,9 @@ def sent_json(webhook_url, webhook_data):
     return req
 
 while True:
-    time.sleep(config.UPDATE_DELAY)
+    time.sleep(node_config.UPDATE_DELAY)
 
-    webhook_url = 'https://'+config.MAIN_ADDRESS+'/hook'
+    webhook_url = 'https://'+node_config.MAIN_ADDRESS+'/hook'
 
     webhook_data = get_os_detail()
 
