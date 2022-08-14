@@ -54,9 +54,3 @@ cd /root && git clone https://github.com/cattomgithub/ServerMonitor.git
 cd ServerMonitor && chmod +x server_monitor
 ./server_monitor
 ```
-
-## Manage
-
-```bash
-
-```
