@@ -89,8 +89,6 @@ node() {
 UPDATE_DELAY = $update_delay
 MAIN_ADDRESS = '$main_address'" >>node_config.py
 
-    # shellcheck source=/dev/null
-    source /root/ServerMonitor/env/bin/activate
     # Register node.monitor.service as a system service.
     sudo ln -s /root/ServerMonitor/systemd/node.monitor.service /etc/systemd/system/node.monitor.service
     sudo systemctl daemon-reload
