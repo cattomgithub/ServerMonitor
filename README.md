@@ -47,10 +47,16 @@ This project is to practice Python and shell skills.
     └── uwsgi_params
 ```
 
-## Usage
+## Install
 
 ```bash
 cd /root && git clone https://github.com/cattomgithub/ServerMonitor.git
 cd ServerMonitor && chmod +x server_monitor
 ./server_monitor
+```
+
+## Manage
+
+```bash
+
 ```
