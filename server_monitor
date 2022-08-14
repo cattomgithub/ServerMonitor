@@ -14,7 +14,7 @@ ini() {
     sudo apt -y update && apt -y upgrade && apt -y autoremove
     sudo apt -y install python3-pip python3-dev build-essential libssl-dev libffi-dev python3-setuptools python3.8-venv python3.8-dev gcc
     # Create Python virtual environment(venv)
-    cd ServerMonitor && mkdir env
+    cd /root/ServerMonitor && mkdir env
     python3 -m venv /root/ServerMonitor/env
     # shellcheck source=/dev/null
     source /root/ServerMonitor/env/bin/activate
