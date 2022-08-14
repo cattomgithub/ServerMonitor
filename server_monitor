@@ -33,4 +33,31 @@ public() (
     systemctl enable public.uwsgi.service
     systemctl start public.uwsgi.service
     # Copy params file of uwsgi to nginx work directory
+    sudo cp /root/ServerMonitor/uwsgi/uwsgi_params /root/nginx_data/monitor/uwsgi_params
 )
+
+main() {
+    # shellcheck source=/dev/null
+    source /root/ServerMonitor/env/bin/activate
+    # Create vassals of uwsgi
+    cd /root/ServerMonitor/env/ && mkdir main_vassals
+    sudo ln -s /root/ServerMonitor/uwsgi/main_uwsgi.ini /root/ServerMonitor/env/main_vassals/
+    # Register main.uwsgi.service as a system service.
+    sudo ln -s /root/ServerMonitor/systemd/main.uwsgi.service /etc/systemd/system/main.uwsgi.service
+    sudo systemctl daemon-reload
+    systemctl enable main.uwsgi.service
+    systemctl start main.uwsgi.service
+}
+
+node() {
+    # shellcheck source=/dev/null
+    source /root/ServerMonitor/env/bin/activate
+    # Register node.monitor.service as a system service.
+    sudo ln -s /root/ServerMonitor/systemd/node.monitor.service /etc/systemd/system/node.monitor.service
+    sudo systemctl daemon-reload
+    systemctl enable node.monitor.service
+    systemctl start node.monitor.service
+}
+
+cd "$HOME"/ServerMonitor || exit
+sed -i '$a\SERVER_ID = 2' config.py

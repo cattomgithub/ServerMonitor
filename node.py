@@ -46,7 +46,7 @@ def sent_json(webhook_url, webhook_data):
 while True:
     time.sleep(config.UPDATE_DELAY)
 
-    webhook_url = config.WEBHOOK_URL
+    webhook_url = 'https://'+config.MAIN_ADDRESS+'/hook'
 
     webhook_data = get_os_detail()
 
