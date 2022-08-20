@@ -100,9 +100,9 @@ echo && echo -e " Server Monitor By ${LIGHT_PURPLE_PREFIX}Cat Tom${COLOR_SUFFIX}
 
 while
     echo -e "  1. Initialization
-  2. Depoly public panel
-  3. Depoly main server
-  4. Depoly node server"
+  2. Deploy public panel
+  3. Deploy main server
+  4. Deploy node server"
 
     read -r -p "Input a number[1-4] or Quit[Q]:" num
 do
